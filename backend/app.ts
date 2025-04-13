@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -6,12 +6,12 @@ import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import compression from "compression";
 import hpp from "hpp";
-import { sanitizeInput } from "./middlewares/xss.sanitize.js";
+import { sanitizeInput } from "./middlewares/xss.sanitize";
 import path from "path";
+const __dirname = path.resolve();
 const app = express();
 dotenv.config();
 //path
-const __dirname = path.resolve();
 //Security Alert
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -32,15 +32,15 @@ app.use(compression());
 app.use(hpp());
 app.use(sanitizeInput);
 
-
 //Build provice
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "/frontend/dist")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-    });
-  }
+  app.use(express.static(path.resolve(__dirname, "../frontend/dist")));
 
+  app.get("*", (req, res) => {
+    const indexPath = path.resolve(__dirname, "../frontend/dist/index.html");
+    res.sendFile(indexPath);
+  });
+}
 //Server listen
 app.listen(process.env.PORT, () => {
   console.log(`${process.env.PORT} Server is Running PORT`);
