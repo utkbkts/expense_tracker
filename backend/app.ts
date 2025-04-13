@@ -8,6 +8,8 @@ import compression from "compression";
 import hpp from "hpp";
 import { sanitizeInput } from "./middlewares/xss.sanitize";
 import path from "path";
+import router from "./routes";
+import {errorMiddleware} from "./middlewares/error.middleware";
 const __dirname = path.resolve();
 const app = express();
 dotenv.config();
@@ -31,6 +33,9 @@ app.use(helmet());
 app.use(compression());
 app.use(hpp());
 app.use(sanitizeInput);
+app.use(errorMiddleware)
+//router
+app.use("/api/v1", router);
 
 //Build provice
 if (process.env.NODE_ENV === "production") {

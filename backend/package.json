@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production  node dist/app.js",
-    "dev": "nodemon --exec ts-node app.ts",
+    "dev": " cross-env NODE_ENV=development nodemon --exec ts-node app.ts",
     "build:backend": "npm install && tsc",
     "build:frontend": "cd .. && cd frontend && npm install && npm run build",
     "build": "npm run build:frontend && npm run build:backend"
