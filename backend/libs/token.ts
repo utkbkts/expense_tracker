@@ -13,14 +13,13 @@ export const hashPassword = async (value: string) => {
 
 export const comparePassword = async (
   userPassword: string,
-  password: string,
-  next: NextFunction
+  password: string
 ) => {
   try {
     const compare = await bcrypt.compare(userPassword, password);
     return compare;
   } catch (error) {
-    return next(new ErrorHandler("Passwords do not match. Try again.", 409));
+    console.log(error);
   }
 };
 

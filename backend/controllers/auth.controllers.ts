@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../utils/error.handler";
 import { pool } from "../libs/database";
-import { hashPassword } from "../libs/token";
+import { comparePassword, createJWT, hashPassword } from "../libs/token";
 
 const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -42,9 +42,46 @@ const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const signInUser = async (req: Request, res: Response) => {
-    
-};
+const signInUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return next(new ErrorHandler("Email and password are required", 400));
+      }
+  
+      const result = await pool.query({
+        text: `SELECT * FROM tbluser WHERE email = $1`,
+        values: [email],
+      });
+  
+      const user = result.rows[0];
+  
+      if (!user) {
+        return next(new ErrorHandler("Invalid email or password", 401));
+      }
+  
+      const isPasswordValid = await comparePassword(password, user?.password);
+  
+      if (!isPasswordValid) {
+        return next(new ErrorHandler("Invalid email or password", 401));
+      }
+  
+      const token = createJWT(user.id); 
+  
+      delete user.password;
+  
+      res.status(200).json({
+        status: "Success",
+        message: "Login successful",
+        token, 
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler("Internal server Error", 500));
+    }
+  };
+  
 
 export default {
   signUpUser,
