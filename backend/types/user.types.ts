@@ -1,8 +1,8 @@
 export interface UserType {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string | null;
+  firstname: string;
+  lastname: string | null;
   contact: string | null;
   accounts: string[] | null;
   provider: string | null;
