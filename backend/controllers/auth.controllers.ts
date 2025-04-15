@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../utils/error.handler";
 import { pool } from "../libs/database";
-import { comparePassword, createJWT, hashPassword } from "../libs/token";
+import { comparePassword,  hashPassword } from "../libs/token";
+import sendToken from "../utils/token.send";
 
 const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -67,16 +68,9 @@ const signInUser = async (req: Request, res: Response, next: NextFunction) => {
         return next(new ErrorHandler("Invalid email or password", 401));
       }
   
-      const token = createJWT(user.id); 
-  
+      
       delete user.password;
-  
-      res.status(200).json({
-        status: "Success",
-        message: "Login successful",
-        token, 
-        user,
-      });
+      sendToken(user, 201, res);
     } catch (error) {
       return next(new ErrorHandler("Internal server Error", 500));
     }

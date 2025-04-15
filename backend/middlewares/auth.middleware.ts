@@ -17,11 +17,11 @@ export const authMiddleware = async (
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      id: number;
+      userId: number;
     };
-
-    const result = await pool.query("SELECT * FROM users WHERE id = $1", [
-      decoded.id,
+    
+    const result = await pool.query("SELECT * FROM tbluser WHERE id = $1", [
+      decoded.userId,
     ]);
 
     if (result.rows.length === 0) {
@@ -29,6 +29,7 @@ export const authMiddleware = async (
     }
 
     req.user = result.rows[0];
+    delete req.user?.password
     next();
   } catch (error:any) {
     return next(new ErrorHandler(`Internal Server Error ${error.message}`, 500));
