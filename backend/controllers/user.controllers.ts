@@ -51,7 +51,7 @@ const updateUser = async (
     }
 
     const updateProfile = await pool.query({
-      text: `UPDATE tbluser SET firstname = $1, lastname = $2, country = $3, currency = $4, contact = $5,updatedAt = CURRENT_TIMESTAMP WHERE id = $6 RETURNING * `,
+      text: `UPDATE tbluser SET firstname = $1, lastname = $2, country = $3, currency = $4, contact = $5,updatedat = CURRENT_TIMESTAMP WHERE id = $6 RETURNING * `,
       values: [firstname, lastname, country, currency, contact, id]
     });
 

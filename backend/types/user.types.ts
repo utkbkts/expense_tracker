@@ -8,6 +8,6 @@ export interface UserType {
   provider: string | null;
   country: string | null;
   currency: string;
-  createdAt: string;
-  updatedAt: string;
+  createdat: string;
+  updatedat: string;
 }
