@@ -98,12 +98,53 @@ const addMoneyToAccount = async (
   next: NextFunction
 ) => {
   try {
+    const { id } = req.user;
+    const { id: paramsId } = req.params; 
+    const { amount } = req.body;
+
+  
+    const newAmount = Number(amount);
+    if (isNaN(newAmount) || newAmount <= 0) {
+      return next(new ErrorHandler('Invalid amount', 400));
+    }
+
+    const result = await pool.query({
+      text: `UPDATE tblaccount SET account_balance = (account_balance + $1), updatedat = CURRENT_TIMESTAMP WHERE id = $2 AND user_id = $3 RETURNING *`,
+      values: [newAmount, paramsId, id], 
+    });
+
+    const accountInformation = result.rows[0];
+
+    if (!accountInformation) {
+      return next(new ErrorHandler(`Account not found`, 404));
+    }
+
+    const description = `${accountInformation.account_name} (Deposit)`;
+
+    const transQuery = {
+      text: `INSERT INTO tbltransaction(user_id, description, type, status, amount, source) 
+             VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
+      values: [
+        id,
+        description,
+        "income",
+        "Completed",
+        amount,
+        accountInformation.account_name,
+      ],
+    };
+    await pool.query(transQuery);
+    
+    res.status(200).json({
+      status: "success",
+      message: "Operation completed successfully",
+      data: accountInformation,
+    });
   } catch (error: any) {
-    return next(
-      new ErrorHandler(`Internal server Error ${error.message}`, 500)
-    );
+    return next(new ErrorHandler(`Internal server Error: ${error.message}`, 500));
   }
 };
+
 
 export default {
   getAccounts,
