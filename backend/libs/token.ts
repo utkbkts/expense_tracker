@@ -28,3 +28,21 @@ export const createJWT = (id: string) => {
     expiresIn: process.env.JWT_EXPIRES_TIME as any,
   });
 };
+
+export function getMonthName(index:any) {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return months[index];
+}
