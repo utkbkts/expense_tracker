@@ -48,14 +48,14 @@ const Hero = () => {
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-black-400">
       <motion.div
-        className="light light-bottom-left"
+        className="light light-bottom-left xl:block hidden"
         variants={bottomLeftLightVariants}
         initial="initial"
         animate="animate"
       />
 
       <motion.div
-        className="light light-top-right"
+        className="light light-top-right xl:block hidden"
         variants={topRightLightVariants}
         initial="initial"
         animate="animate"
@@ -65,7 +65,7 @@ const Hero = () => {
         <motion.div
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
-         transition={{ duration: 1.5, ease: "easeInOut", delay: 1.2 }} className="absolute left-0 top-42 transform -translate-y-1/2 flex flex-col items-start gap-2">
+         transition={{ duration: 1.5, ease: "easeInOut", delay: 1.2 }} className="absolute left-0 top-42 transform -translate-y-1/2 hidden flex-col items-start gap-2 2xl:flex">
           <span className="text-black-200 text-6xl font-mono">[</span>
         </motion.div>
 
@@ -74,7 +74,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, ease: "easeInOut", delay: 0.4 }}
-            className="text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
+            className="md:text-5xl text-[18px] font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
           >
             Check all your accounts
           </motion.h1>
@@ -83,7 +83,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeInOut", delay: 0.8 }}
-            className="text-4xl font-semibold opacity-90"
+            className="md:text-4xl text-[18px] font-semibold opacity-90"
           >
             And do it <span className="text-cyan-400 font-bold">for free</span>
           </motion.h1>
@@ -92,7 +92,7 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 2, ease: "easeInOut", delay: 1 }}
-            className="text-2xl leading-relaxed text-gray-300 font-medium"
+            className="md:text-2xl text-[18px] leading-relaxed text-gray-300 font-medium"
           >
             Your budget is now under control with our monthly account monitoring
             system.
@@ -103,16 +103,16 @@ const Hero = () => {
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          transition={{ duration: 1.5, ease: "easeInOut", delay: 1.2 }}
-        className="absolute right-0 top-42 transform -translate-y-1/2 flex flex-col items-end gap-2">
+        className="absolute right-0 top-42 transform -translate-y-1/2 hidden flex-col items-end gap-2 2xl:flex">
           <span className="text-black-200 text-6xl font-mono">]</span>
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeInOut", delay: 1.4 }}
-          className="flex items-center justify-center gap-7 text-[16px]"
+          className="flex items-center justify-center gap-7 text-[16px] md:flex-row flex-col"
         >
-          <button className="relative bg-gradient-to-br from-black-200 to-black-400 px-6 py-4 cursor-pointer overflow-hidden group">
+          <button className="relative bg-gradient-to-br from-black-200 to-black-400 px-6 py-4  cursor-pointer overflow-hidden group">
             {/* Sol Alt */}
             <span className="absolute bottom-0 left-0 w-0 h-0 border-t-[12px] border-l-[12px] border-t-black-400 border-l-transparent rotate-[-180deg]"></span>
             {/* Sağ Üst */}
@@ -161,8 +161,8 @@ const Hero = () => {
                 <Loader size={20} />
               </div>
             </div>
-            <div className="flex flex-col items-start">
-              <h1 className="text-[18px]">$5.1 M</h1>
+            <div className="flex flex-col md:items-start items-center">
+              <h1 className="md:text-[18px] text-sm">$5.1 M</h1>
               <span className="text-gray-400 text-sm ">Assets Secured</span>
             </div>
           </div>
@@ -170,8 +170,8 @@ const Hero = () => {
           <div>
             <span className="flex items-center gap-2">
               <Users size={35} className="text-yellow-op" />
-              <div className="flex flex-col items-start">
-                <span className="text-[18px]">140K+</span>
+              <div className="flex flex-col md:items-start items-center">
+                <span className="md:text-[18px] text-sm">140K+</span>
                 <p className="text-gray-400 text-sm">New Users</p>
               </div>
             </span>
