@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/input/Input";
 import { CreateSignUpSchema, signUpSchema } from "@/schema/signup.schema";
 import Button from "@/components/button/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "@/store/user.store";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import toast from "react-hot-toast";
@@ -12,6 +12,8 @@ import { auth } from "@/firebase/config";
 
 const Signup = () => {
   const { loading, signup } = useUserStore();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -28,19 +30,22 @@ const Signup = () => {
       const newUser = {
         firstname: user.displayName || "NoName",
         email: user.email || "noemail@gmail.com",
-        password: user.uid, 
+        password: user.uid,
       };
-      await signup(newUser);
+      const success = await signup(newUser);
+      if (success) {
+        navigate("/");
+      }
     } catch (error: any) {
       toast.error(error?.message);
     }
   };
 
   const onSubmit = async (data: CreateSignUpSchema) => {
-    const user = {
-      ...data,
-    };
-    await signup(user);
+    const success = await signup(data);
+    if (success) {
+      navigate("/sign-in");
+    }
   };
 
   return (
@@ -49,8 +54,9 @@ const Signup = () => {
         <div className="p-4 flex flex-col items-center gap-8 justify-center">
           <h1 className="text-2xl">Sign Up</h1>
           <div
-          onClick={signInWithGoogle}
-          className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
+            onClick={signInWithGoogle}
+            className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]"
+          >
             <img
               src={google}
               alt="Google"

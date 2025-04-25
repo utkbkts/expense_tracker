@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import useUserStore from "@/store/user.store";
@@ -11,8 +11,8 @@ import { CreateSignInSchema, SignInSchema } from "@/schema/signin.schema";
 import Button from "@/components/button/Button";
 
 const SignIn = () => {
-    const { loading, signin } = useUserStore();
-  
+  const { loading, signin } = useUserStore();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -21,26 +21,29 @@ const SignIn = () => {
     resolver: zodResolver(SignInSchema),
   });
 
-    const signInWithGoogle = async () => {
-      const provider = new GoogleAuthProvider();
-      try {
-        const res = await signInWithPopup(auth, provider);
-        const user = res.user;
-        const newUser = {
-          email: user.email || "noemail@gmail.com",
-          password: user.uid, 
-        };
-        await signin(newUser);
-      } catch (error: any) {
-        toast.error(error?.message);
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const user = res.user;
+      const newUser = {
+        email: user.email || "noemail@gmail.com",
+        password: user.uid,
+      };
+      const success = await signin(newUser);
+      if (success) {
+        navigate(0);
       }
-    };
+    } catch (error: any) {
+      toast.error(error?.message);
+    }
+  };
 
-  const onSubmit = async(data: CreateSignInSchema) => {
-    const user = {
-      ...data,
-    };
-    await signin(user);
+  const onSubmit = async (data: CreateSignInSchema) => {
+    const success = await signin(data);
+    if (success) {
+      navigate(0);
+    }
   };
 
   return (
@@ -49,8 +52,9 @@ const SignIn = () => {
         <div className="p-4 flex flex-col items-center gap-8 justify-center">
           <h1 className="text-2xl">Sign In</h1>
           <div
-          onClick={signInWithGoogle}
-          className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
+            onClick={signInWithGoogle}
+            className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]"
+          >
             <img
               src={google}
               alt="Google"
@@ -84,19 +88,22 @@ const SignIn = () => {
               type="password"
               placeholder="Password"
             />
-           
+
             <div className="mt-5 flex w-full">
-              <Button text="Sign In" disabled={loading} loading={loading}/>
+              <Button text="Sign In" disabled={loading} loading={loading} />
             </div>
           </form>
           <div className="">
-              <span className="text-sm flex gap-1 items-center">
+            <span className="text-sm flex gap-1 items-center">
               Don't have an account?
-                <Link to={"/sign-up"} className="text-blue-400 underline cursor-pointer">
-                  Sign Up
-                </Link>
-              </span>
-            </div>
+              <Link
+                to={"/sign-up"}
+                className="text-blue-400 underline cursor-pointer"
+              >
+                Sign Up
+              </Link>
+            </span>
+          </div>
         </div>
       </div>
     </div>

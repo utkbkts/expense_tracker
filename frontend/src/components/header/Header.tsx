@@ -2,7 +2,7 @@ import logo from "@/assets/logo.png";
 import useUserStore from "@/store/user.store";
 import { Link, useLocation } from "react-router-dom";
 const Header = () => {
-  const { user } = useUserStore();
+  const { user,logout } = useUserStore();
   const location = useLocation().pathname;
   return (
     <header className="fixed top-0 bg-transparent z-50 w-full ">
@@ -48,7 +48,7 @@ const Header = () => {
         </div>
         <div>
           {user ? (
-            <button className="py-2 px-4 rounded-full  bg-red-400 text-black cursor-pointer transition-all duration-300 hover:opacity-80">
+            <button onClick={logout} className="py-2 px-4 rounded-full  bg-red-400 text-black cursor-pointer transition-all duration-300 hover:opacity-80">
               Logout
             </button>
           ) : (

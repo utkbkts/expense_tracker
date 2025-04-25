@@ -4,41 +4,70 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 
 interface userStoreType {
-    user: SignUpType | null;
-    loading: boolean;
-    signup: (user: SignUpType) => Promise<void>;
-    signin:(user: SignInType) => Promise<void>;
-  }
-  
-  const useUserStore = create<userStoreType>((set) => ({
-    user: null,
-    loading: false,
-  
-    signup: async (user: SignUpType) => {
-      set({ loading: true });
-      try {
-        const response = await axios.post("/auth/sign-up", user);
-        const res = response.data;
-        set({ user: res.data, loading: false });
-        toast.success("Sign up is successfully")
-      } catch (error:any) {
-        toast.error(error?.response?.data?.message)
-        set({ loading: false });
-      }
-    },
+  user: SignUpType | null;
+  loading: boolean;
+  checkingAuth: boolean;
+  signup: (user: SignUpType) => Promise<boolean>;
+  signin: (user: SignInType) => Promise<boolean>;
+  logout: () => void;
+  getUser: () => Promise<void>;
+}
 
-    signin: async (user: SignUpType) => {
-      set({ loading: true });
-      try {
-        const response = await axios.post("/auth/sign-in", user);
-        const res = response.data;
-        set({ user: res.data, loading: false });
-        toast.success("Sign in is successfully")
-      } catch (error:any) {
-        toast.error(error?.response?.data?.message)
-        set({ loading: false });
-      }
-    },
-  }));
+const useUserStore = create<userStoreType>((set) => ({
+  user: null ,
+  loading: false,
+  checkingAuth: true,
+
+  signup: async (user: SignUpType) => {
+    set({ loading: true });
+    try {
+      const response = await axios.post("/auth/sign-up", user);
+      const res = response.data;
+      set({ user: res.data, loading: false });
+      toast.success("Sign up is successfully");
+      return true;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      set({ loading: false });
+      return false;
+    }
+  },
+
+  signin: async (user: SignInType) => {
+    set({ loading: true });
+    try {
+      const response = await axios.post("/auth/sign-in", user);
+      const res = response.data;
+      set({ user: res.data, loading: false });
+      toast.success("Sign in is successfully");
+      return true;
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      set({ loading: false });
+      return false;
+    }
+  },
+
+  logout: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.post("/auth/logout");
+      const res = response.data;
+      set({ user: res.data, loading: false });
+      toast.success("Logout is successfully");
+    } catch (error) {
+      set({ loading: false });
+    }
+  },
+  getUser: async () => {
+    set({ checkingAuth: true });
+    try {
+      const response = await axios.get("/user");
+      set({ user: response.data, checkingAuth: false });
+    } catch (error: any) {
+      set({ checkingAuth: false, user: null });
+    }
+  },
+}));
 
 export default useUserStore;

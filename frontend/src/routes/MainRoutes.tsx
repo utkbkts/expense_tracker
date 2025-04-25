@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import NotFound from "@/components/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/components/Loadind";
+import ProctedRoutes from "./ProctedRoutes";
 
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const Signup = React.lazy(() => import("@/pages/auth/sign-up/SignUp"));
@@ -24,7 +25,9 @@ export const MainRoutes = {
       path: "/sign-in",
       element: (
         <Suspense fallback={<Loading fullScreen />}>
-          <SignIn />
+          <ProctedRoutes>
+            <SignIn />
+          </ProctedRoutes>
         </Suspense>
       ),
     },
@@ -32,7 +35,9 @@ export const MainRoutes = {
       path: "/sign-up",
       element: (
         <Suspense fallback={<Loading fullScreen />}>
-          <Signup />
+          <ProctedRoutes>
+            <Signup />
+          </ProctedRoutes>
         </Suspense>
       ),
     },
