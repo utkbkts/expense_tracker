@@ -5,7 +5,9 @@ import Input from "@/components/input/Input";
 import { CreateSignUpSchema, signUpSchema } from "@/schema/signup.schema";
 import Button from "@/components/button/Button";
 import { Link } from "react-router-dom";
+import useUserStore from "@/store/user.store";
 const Signup = () => {
+  const { loading, signup } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -14,8 +16,11 @@ const Signup = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = (data: CreateSignUpSchema) => {
-    console.log(data);
+  const onSubmit = async(data: CreateSignUpSchema) => {
+    const user = {
+     ...data
+    }
+    await signup(user)
   };
 
   return (
@@ -67,7 +72,7 @@ const Signup = () => {
             />
            
             <div className="mt-5 flex w-full">
-              <Button text="Sign Up" />
+              <Button text="Sign Up" disabled={loading} loading={loading}/>
             </div>
           </form>
           <div className="">
