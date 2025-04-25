@@ -14,12 +14,12 @@ interface userStoreType {
     loading: false,
   
     signup: async (user: SignUpType) => {
-      console.log("🚀 ~ signup: ~ user:", user)
       set({ loading: true });
       try {
         const response = await axios.post("/auth/sign-up", user);
         const res = response.data;
         set({ user: res.data, loading: false });
+        toast.success("Sign up is successfully")
       } catch (error:any) {
         toast.error(error?.response?.data?.message)
         set({ loading: false });
