@@ -1,11 +1,18 @@
+import { Link } from "react-router-dom";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase/config";
+import useUserStore from "@/store/user.store";
+import toast from "react-hot-toast";
 import google from "@/assets/auth/google.png";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/input/Input";
 import { CreateSignInSchema, SignInSchema } from "@/schema/signin.schema";
 import Button from "@/components/button/Button";
-import { Link } from "react-router-dom";
+
 const SignIn = () => {
+    const { loading, signin } = useUserStore();
+  
   const {
     register,
     handleSubmit,
@@ -14,8 +21,26 @@ const SignIn = () => {
     resolver: zodResolver(SignInSchema),
   });
 
-  const onSubmit = (data: CreateSignInSchema) => {
-    console.log(data);
+    const signInWithGoogle = async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const res = await signInWithPopup(auth, provider);
+        const user = res.user;
+        const newUser = {
+          email: user.email || "noemail@gmail.com",
+          password: user.uid, 
+        };
+        await signin(newUser);
+      } catch (error: any) {
+        toast.error(error?.message);
+      }
+    };
+
+  const onSubmit = async(data: CreateSignInSchema) => {
+    const user = {
+      ...data,
+    };
+    await signin(user);
   };
 
   return (
@@ -23,7 +48,9 @@ const SignIn = () => {
       <div className="border border-gray-300 shadow-md w-[400px] h-full">
         <div className="p-4 flex flex-col items-center gap-8 justify-center">
           <h1 className="text-2xl">Sign In</h1>
-          <div className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
+          <div
+          onClick={signInWithGoogle}
+          className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
             <img
               src={google}
               alt="Google"
@@ -59,7 +86,7 @@ const SignIn = () => {
             />
            
             <div className="mt-5 flex w-full">
-              <Button text="Sign In" />
+              <Button text="Sign In" disabled={loading} loading={loading}/>
             </div>
           </form>
           <div className="">

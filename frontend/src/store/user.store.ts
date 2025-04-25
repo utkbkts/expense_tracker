@@ -1,5 +1,5 @@
 import { axios } from "@/libs/axios";
-import { SignUpType } from "@/types/type";
+import { SignInType, SignUpType } from "@/types/type";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
@@ -7,6 +7,7 @@ interface userStoreType {
     user: SignUpType | null;
     loading: boolean;
     signup: (user: SignUpType) => Promise<void>;
+    signin:(user: SignInType) => Promise<void>;
   }
   
   const useUserStore = create<userStoreType>((set) => ({
@@ -20,6 +21,19 @@ interface userStoreType {
         const res = response.data;
         set({ user: res.data, loading: false });
         toast.success("Sign up is successfully")
+      } catch (error:any) {
+        toast.error(error?.response?.data?.message)
+        set({ loading: false });
+      }
+    },
+
+    signin: async (user: SignUpType) => {
+      set({ loading: true });
+      try {
+        const response = await axios.post("/auth/sign-in", user);
+        const res = response.data;
+        set({ user: res.data, loading: false });
+        toast.success("Sign in is successfully")
       } catch (error:any) {
         toast.error(error?.response?.data?.message)
         set({ loading: false });

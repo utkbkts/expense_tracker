@@ -25,7 +25,6 @@ const Signup = () => {
     try {
       const res = await signInWithPopup(auth, provider);
       const user = res.user;
-      console.log("🚀 ~ signInWithGoogle ~ user:", user)
       const newUser = {
         firstname: user.displayName || "NoName",
         email: user.email || "noemail@gmail.com",
