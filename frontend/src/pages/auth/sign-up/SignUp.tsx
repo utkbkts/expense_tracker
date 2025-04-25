@@ -6,6 +6,10 @@ import { CreateSignUpSchema, signUpSchema } from "@/schema/signup.schema";
 import Button from "@/components/button/Button";
 import { Link } from "react-router-dom";
 import useUserStore from "@/store/user.store";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import toast from "react-hot-toast";
+import { auth } from "@/firebase/config";
+
 const Signup = () => {
   const { loading, signup } = useUserStore();
   const {
@@ -16,11 +20,28 @@ const Signup = () => {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = async(data: CreateSignUpSchema) => {
-    const user = {
-     ...data
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const user = res.user;
+      console.log("🚀 ~ signInWithGoogle ~ user:", user)
+      const newUser = {
+        firstname: user.displayName || "NoName",
+        email: user.email || "noemail@gmail.com",
+        password: user.uid, 
+      };
+      await signup(newUser);
+    } catch (error: any) {
+      toast.error(error?.message);
     }
-    await signup(user)
+  };
+
+  const onSubmit = async (data: CreateSignUpSchema) => {
+    const user = {
+      ...data,
+    };
+    await signup(user);
   };
 
   return (
@@ -28,7 +49,9 @@ const Signup = () => {
       <div className="border border-gray-300 shadow-md w-[400px] h-full">
         <div className="p-4 flex flex-col items-center gap-8 justify-center">
           <h1 className="text-2xl">Sign Up</h1>
-          <div className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
+          <div
+          onClick={signInWithGoogle}
+          className="flex items-center gap-3 border border-gray-300 rounded-lg px-4 py-3 justify-center cursor-pointer hover:bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]">
             <img
               src={google}
               alt="Google"
@@ -70,19 +93,22 @@ const Signup = () => {
               type="password"
               placeholder="Password"
             />
-           
+
             <div className="mt-5 flex w-full">
-              <Button text="Sign Up" disabled={loading} loading={loading}/>
+              <Button text="Sign Up" disabled={loading} loading={loading} />
             </div>
           </form>
           <div className="">
-              <span className="text-sm">
-                Do you have an account?{" "}
-                <Link to={"/sign-in"} className="text-blue-400 underline cursor-pointer">
-                  Sign in
-                </Link>
-              </span>
-            </div>
+            <span className="text-sm">
+              Do you have an account?{" "}
+              <Link
+                to={"/sign-in"}
+                className="text-blue-400 underline cursor-pointer"
+              >
+                Sign in
+              </Link>
+            </span>
+          </div>
         </div>
       </div>
     </div>
