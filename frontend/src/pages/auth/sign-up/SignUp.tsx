@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@/components/input/Input";
 import { CreateSignUpSchema, signUpSchema } from "@/schema/signup.schema";
 import Button from "@/components/button/Button";
+import { Link } from "react-router-dom";
 const Signup = () => {
   const {
     register,
@@ -72,9 +73,9 @@ const Signup = () => {
           <div className="">
               <span className="text-sm">
                 Do you have an account?{" "}
-                <a className="text-blue-400 underline cursor-pointer">
+                <Link to={"/sign-in"} className="text-blue-400 underline cursor-pointer">
                   Sign in
-                </a>
+                </Link>
               </span>
             </div>
         </div>

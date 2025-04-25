@@ -112,11 +112,11 @@ const Hero = () => {
           transition={{ duration: 1.5, ease: "easeInOut", delay: 1.4 }}
           className="flex items-center justify-center gap-7 text-[16px] md:flex-row flex-col"
         >
-          <button className="relative bg-gradient-to-br from-black-200 to-black-400 px-6 py-4  cursor-pointer overflow-hidden group">
+          <button className="relative bg-gradient-to-br from-black-200 to-black-400 px-6 py-4  cursor-pointer overflow-hidden group active:[scale:0.92] transition-all duration-300">
             {/* Sol Alt */}
-            <span className="absolute bottom-0 left-0 w-0 h-0 border-t-[12px] border-l-[12px] border-t-black-400 border-l-transparent rotate-[-180deg]"></span>
+            <span className="absolute bottom-0 left-0 w-0 h-0 border-t-[12px] border-l-[14px] border-t-black-400 border-l-transparent rotate-[-180deg]"></span>
             {/* Sağ Üst */}
-            <span className="absolute top-0 right-0 w-0 h-0 border-t-[12px] border-l-[12px] border-t-black-400 border-l-transparent"></span>
+            <span className="absolute top-0 right-0 w-0 h-0  border-t-[12px] border-l-[12px] border-t-black-400 border-l-transparent "></span>
             {/* Sol Üst */}
             <span className="absolute top-1 left-1 w-0 h-0 border-b-[12px] border-r-[12px] border-b-black border-r-transparent rotate-90 group-hover:top-3 group-hover:left-4 transition-all duration-300"></span>
             {/* Sağ Alt */}
