@@ -7,6 +7,7 @@ import sendToken from "../utils/token.send";
 const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { firstname, email, password } = req.body;
+    console.log("🚀 ~ signUpUser ~ firstname, email, password :", firstname, email, password )
 
     if (!firstname || !email || !password) {
       return next(new ErrorHandler("Provide Required Fields!", 404));

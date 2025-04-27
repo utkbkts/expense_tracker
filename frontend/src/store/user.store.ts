@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 
 interface userStoreType {
-  user: SignUpType | null;
+  user: updateUserType | null;
   loading: boolean;
   checkingAuth: boolean;
   signup: (user: SignUpType) => Promise<boolean>;

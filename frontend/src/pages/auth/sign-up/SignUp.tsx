@@ -42,7 +42,11 @@ const Signup = () => {
   };
 
   const onSubmit = async (data: CreateSignUpSchema) => {
-    const success = await signup({ user: data });
+    const success = await signup({
+      firstname: data.firstname,
+      email: data.email,
+      password: data.password,
+    });
     if (success) {
       navigate("/sign-in");
     }

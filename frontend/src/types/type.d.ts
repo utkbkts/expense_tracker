@@ -1,14 +1,8 @@
 export type SignUpType = {
   _id?: any;
-  user: {
-    firstname?: string;
-    email?: string;
-    password?: string;
-    country?: string;
-    currency?: string;
-    phonenumber?: string;
-    lastname?: string;
-  };
+  firstname?: string;
+  email?: string;
+  password?: string;
 };
 
 export type SignInType = {
