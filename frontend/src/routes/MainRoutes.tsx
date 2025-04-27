@@ -7,6 +7,7 @@ import ProctedRoutes from "./ProctedRoutes";
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const Signup = React.lazy(() => import("@/pages/auth/sign-up/SignUp"));
 const SignIn = React.lazy(() => import("@/pages/auth/sign-in/SignIn"));
+const Settings = React.lazy(() => import("@/pages/settings/Settings"));
 
 export const MainRoutes = {
   path: "/",
@@ -38,6 +39,14 @@ export const MainRoutes = {
           <ProctedRoutes>
             <Signup />
           </ProctedRoutes>
+        </Suspense>
+      ),
+    },
+    {
+      path: "/settings",
+      element: (
+        <Suspense fallback={<Loading fullScreen />}>
+            <Settings />
         </Suspense>
       ),
     },

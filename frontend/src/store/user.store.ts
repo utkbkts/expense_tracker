@@ -1,5 +1,5 @@
 import { axios } from "@/libs/axios";
-import { SignInType, SignUpType } from "@/types/type";
+import { SignInType, SignUpType, updateUserType } from "@/types/type";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
@@ -11,10 +11,11 @@ interface userStoreType {
   signin: (user: SignInType) => Promise<boolean>;
   logout: () => void;
   getUser: () => Promise<void>;
+  updateUser: (newData: updateUserType) => Promise<any>;
 }
 
 const useUserStore = create<userStoreType>((set) => ({
-  user: null ,
+  user: null,
   loading: false,
   checkingAuth: true,
 
@@ -66,6 +67,17 @@ const useUserStore = create<userStoreType>((set) => ({
       set({ user: response.data, checkingAuth: false });
     } catch (error: any) {
       set({ checkingAuth: false, user: null });
+    }
+  },
+  updateUser: async (newData: updateUserType) => {
+    set({ checkingAuth: true });
+    try {
+      const response = await axios.put("/user", newData);
+      set({ user: response.data, loading: false });
+      toast.success(response?.data?.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      set({ loading: false, user: null });
     }
   },
 }));
