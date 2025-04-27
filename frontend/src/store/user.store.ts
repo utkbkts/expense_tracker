@@ -72,7 +72,7 @@ const useUserStore = create<userStoreType>((set) => ({
   updateUser: async (user: updateUserType) => {
     set({ loading: true });
     try {
-      const response = await axios.put("/user", {...user});
+      const response = await axios.put("/user", user.user);
       toast.success(response?.data?.message);
       set({ user: response.data, loading: false });
     } catch (error: any) {

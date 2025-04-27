@@ -19,6 +19,7 @@ export type updateUserType = {
     password?: string;
     country?: string | undefined;
     currency?: string | undefined;
+    contact?: string | undefined;
     phonenumber?: string;
     lastname?: string;
   };

@@ -55,15 +55,7 @@ const SettingForm = () => {
   }, []);
 
   const onSubmit = async (data: SettingsSchemaType) => {
-    await updateUser({
-      firstname: data?.firstname,
-      lastname: data?.lastname,
-      email: data?.email,
-      phonenumber: data?.phonenumber,
-      contact: data?.contact,
-      country: data?.country,
-      currency: data?.currency,
-    });
+    await updateUser({user:data});
   };
 
   return (
