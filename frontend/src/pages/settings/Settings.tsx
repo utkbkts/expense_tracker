@@ -14,10 +14,10 @@ const Settings = () => {
             <p className="text-lg font-bold">Profile Information</p>
             <div className="flex items-center gap-4 my-8">
               <div className="py-2 px-4 rounded-full bg-purple-600 uppercase text-2xl">
-                <p>{user?.user?.firstname?.charAt(0)}</p>
+                <p>{user?.user?.firstname?.charAt(0) || ""}</p>
               </div>
               <div>
-                <p>{nameCharAt(user?.user?.firstname)}</p>
+                <p>{nameCharAt(user?.user?.firstname) || ""}</p>
               </div>
             </div>
           </div>

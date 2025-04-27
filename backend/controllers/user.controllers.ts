@@ -30,12 +30,23 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
     );
   }
 };
-
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.user;
     const { firstname, lastname, country, currency, contact, phonenumber } =
       req.body;
+    console.log("🚀 ~ updateUser ~  firstname, lastname, country, currency, contact, phonenumber :",  firstname, lastname, country, currency, contact, phonenumber )
+
+    if (
+      !firstname ||
+      !lastname ||
+      !phonenumber ||
+      !contact ||
+      !country ||
+      !currency
+    ) {
+      return next(new ErrorHandler("All fields are required", 400));
+    }
 
     const userExist = await pool.query({
       text: `SELECT * FROM tbluser WHERE id = $1`,
@@ -43,29 +54,28 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     const user = userExist.rows[0];
-
     if (!user) {
       return next(new ErrorHandler(`User not found`, 404));
     }
 
     const updateProfile = await pool.query({
       text: `UPDATE tbluser 
-             SET firstname = $1, 
-                 lastname = $2, 
-                 country = $3, 
-                 phonenumber = $4, 
-                 currency = $5, 
-                 contact = $6, 
+             SET firstname = $1,
+                 lastname = $2,
+                 phonenumber = $3, 
+                 contact = $4, 
+                 country = $5,
+                 currency = $6, 
                  updatedat = CURRENT_TIMESTAMP 
              WHERE id = $7 
              RETURNING *`,
       values: [
         firstname,
         lastname,
-        country,
         phonenumber,
-        currency,
         contact,
+        country,
+        currency,
         id,
       ],
     });

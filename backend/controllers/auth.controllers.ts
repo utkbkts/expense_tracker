@@ -7,7 +7,6 @@ import sendToken from "../utils/token.send";
 const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { firstname, email, password } = req.body;
-    console.log("🚀 ~ signUpUser ~ firstname, email, password :", firstname, email, password )
 
     if (!firstname || !email || !password) {
       return next(new ErrorHandler("Provide Required Fields!", 404));
@@ -37,10 +36,10 @@ const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
     res.status(201).json({
       status: "Success",
       message: "User account created successfully",
-      user: newUser,
+      newUser,
     });
-  } catch (error) {
-    return next(new ErrorHandler("Internal server Error", 500));
+  } catch (error: any) {
+    return next(new ErrorHandler("Internal server Error" + error.message, 500));
   }
 };
 

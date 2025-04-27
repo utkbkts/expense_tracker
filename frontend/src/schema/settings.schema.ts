@@ -20,6 +20,7 @@ export const SettingsSchema = z.object({
 
   country: z.string().optional(),
   currency: z.string().optional(),
+  contact: z.string().optional(),
 });
 
 export type SettingsSchemaType = z.infer<typeof SettingsSchema>;

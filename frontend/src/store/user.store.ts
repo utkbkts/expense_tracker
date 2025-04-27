@@ -69,12 +69,12 @@ const useUserStore = create<userStoreType>((set) => ({
       set({ checkingAuth: false, user: null });
     }
   },
-  updateUser: async (newData: updateUserType) => {
-    set({ checkingAuth: true });
+  updateUser: async (user: updateUserType) => {
+    set({ loading: true });
     try {
-      const response = await axios.put("/user", newData);
-      set({ user: response.data, loading: false });
+      const response = await axios.put("/user", {...user});
       toast.success(response?.data?.message);
+      set({ user: response.data, loading: false });
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
       set({ loading: false, user: null });

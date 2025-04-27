@@ -9,60 +9,61 @@ import { SettingsSchema, SettingsSchemaType } from "@/schema/settings.schema";
 import Button from "@/components/button/Button";
 
 type SelectedCountry = {
-    country: string | undefined;
-    currency: string | undefined;
-  } | null;
-  
+  country: string | undefined;
+  currency: string | undefined;
+} | null;
 
 const SettingForm = () => {
-    const { user, updateUser, loading } = useUserStore();
+  const { user, updateUser, loading } = useUserStore();
 
-    const {
-      register,
-      handleSubmit,
-      setValue,
-      formState: { errors },
-    } = useForm({
-      resolver: zodResolver(SettingsSchema),
-      defaultValues: {
-        firstname: user?.user?.firstname || "",
-        lastname: user?.user?.lastname || "",
-        email: user?.user?.email || "",
-        phonenumber: user?.user?.phonenumber || "",
-        country: user?.user?.country || "",
-        currency: user?.user?.currency || "",
-      },
-    });
-  
-    const [selectedCountry, setSelectedCountry] = useState<SelectedCountry>({
-      country: user?.user?.country,
-      currency: user?.user?.currency,
-    });
-  
-    useEffect(() => {
-      setValue("country", selectedCountry?.country);
-    }, [selectedCountry, setValue]);
-  
-    const [countriesData, setCountriesData] = useState([]);
-  
-    const getCountriesList = async () => {
-      const data = await fetchCountries();
-      setCountriesData(data);
-    };
-  
-    useEffect(() => {
-      getCountriesList();
-    }, []);
-  
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(SettingsSchema),
+    defaultValues: {
+      firstname: user?.user?.firstname || "",
+      lastname: user?.user?.lastname || "",
+      email: user?.user?.email || "",
+      phonenumber: user?.user?.phonenumber || "",
+      country: user?.user?.country || "",
+      currency: user?.user?.currency || "",
+      contact: user?.user?.contact || "",
+    },
+  });
+
+  const [selectedCountry, setSelectedCountry] = useState<SelectedCountry>({
+    country: user?.user?.country,
+    currency: user?.user?.currency,
+  });
+
+  useEffect(() => {
+    setValue("country", selectedCountry?.country);
+  }, [selectedCountry, setValue]);
+
+  const [countriesData, setCountriesData] = useState([]);
+
+  const getCountriesList = async () => {
+    const data = await fetchCountries();
+    setCountriesData(data);
+  };
+
+  useEffect(() => {
+    getCountriesList();
+  }, []);
+
   const onSubmit = async (data: SettingsSchemaType) => {
-    const newData = {
-      firstname: data.firstname,
-      lastname: data.lastname,
-      phonenumber: data.phonenumber,
-      country: data.country,
-      currency: data.currency,
-    };
-    await updateUser(newData);
+    await updateUser({
+      firstname: data?.firstname,
+      lastname: data?.lastname,
+      email: data?.email,
+      phonenumber: data?.phonenumber,
+      contact: data?.contact,
+      country: data?.country,
+      currency: data?.currency,
+    });
   };
 
   return (
@@ -101,6 +102,16 @@ const SettingForm = () => {
             placeholder="656566"
             register={register}
             errors={errors?.phonenumber}
+            type="text"
+          />
+        </div>
+        <div className="w-full">
+          <Input
+            name="contact"
+            label="Contact"
+            placeholder="Contact"
+            register={register}
+            errors={errors?.contact}
             type="text"
           />
         </div>

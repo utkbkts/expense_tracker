@@ -32,7 +32,7 @@ const Signup = () => {
         email: user.email || "noemail@gmail.com",
         password: user.uid,
       };
-      const success = await signup({ user: newUser });
+      const success = await signup(newUser);
       if (success) {
         navigate("/");
       }

@@ -13,11 +13,13 @@ export type SignInType = {
 
 export type updateUserType = {
   _id?: any;
-  firstname?: string;
-  email?: string;
-  password?: string;
-  country?: string | undefined;
-  currency?: string | undefined;
-  phonenumber?: string;
-  lastname?: string;
+  user: {
+    firstname?: string | undefined;
+    email?: string;
+    password?: string;
+    country?: string | undefined;
+    currency?: string | undefined;
+    phonenumber?: string;
+    lastname?: string;
+  };
 };
