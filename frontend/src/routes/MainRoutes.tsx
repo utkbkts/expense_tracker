@@ -3,6 +3,7 @@ import NotFound from "@/components/NotFound";
 import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/components/Loadind";
 import ProctedRoutes from "./ProctedRoutes";
+import Accounts from "@/pages/accounts/Accounts";
 
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const Signup = React.lazy(() => import("@/pages/auth/sign-up/SignUp"));
@@ -47,6 +48,14 @@ export const MainRoutes = {
       element: (
         <Suspense fallback={<Loading fullScreen />}>
             <Settings />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/accounts",
+      element: (
+        <Suspense fallback={<Loading fullScreen />}>
+            <Accounts />
         </Suspense>
       ),
     },
