@@ -60,7 +60,7 @@ const SettingForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
-      <div className="flex flex-col items-center justify-center gap-4 w-full">
+      <div className="flex flex-col  justify-center gap-4 w-full">
         <div className="flex items-center gap-4">
           <Input
             name="firstname"

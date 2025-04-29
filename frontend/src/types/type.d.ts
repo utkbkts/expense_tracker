@@ -24,3 +24,9 @@ export type updateUserType = {
     lastname?: string;
   };
 };
+
+export type PasswordType = {
+  _id?: any;
+  currentPassword:string
+  newPassword:string
+}

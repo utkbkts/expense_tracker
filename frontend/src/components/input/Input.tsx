@@ -7,6 +7,7 @@ interface Props {
   label: string;
   type: string;
   placeholder: string;
+  disabled?: boolean;
 }
 
 const Input = ({
@@ -16,6 +17,7 @@ const Input = ({
   name,
   label,
   placeholder,
+  disabled=false
 }: Props) => {
   return (
     <div className="flex flex-col gap-2">
@@ -25,6 +27,7 @@ const Input = ({
           type={type}
           name={name}
           {...register(name)}
+          disabled={disabled}
           placeholder={placeholder}
           className="py-2 px-2 w-full  outline-none bg-transparent border-b-gray-300 border-b text-sm"
         />

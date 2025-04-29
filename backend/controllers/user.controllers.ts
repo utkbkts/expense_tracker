@@ -35,7 +35,6 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.user;
     const { firstname, lastname, country, currency, contact, phonenumber } =
       req.body;
-    console.log("🚀 ~ updateUser ~  firstname, lastname, country, currency, contact, phonenumber :",  firstname, lastname, country, currency, contact, phonenumber )
 
     if (
       !firstname ||

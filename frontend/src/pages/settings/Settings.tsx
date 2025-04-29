@@ -1,6 +1,7 @@
 import { nameCharAt } from "@/helpers/helper";
 import useUserStore from "@/store/user.store";
 import SettingForm from "./partials/SettingForm";
+import ChangePassword from "./partials/ChangePassword";
 
 const Settings = () => {
   const { user } = useUserStore();
@@ -21,9 +22,11 @@ const Settings = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col  justify-center">
             {/* SettingForm */}
             <SettingForm />
+            <hr className="bg-white mt-10 mb-2 w-full h-[1px]"/>
+            <ChangePassword />
           </div>
         </div>
       </div>

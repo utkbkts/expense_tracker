@@ -1,5 +1,5 @@
 import { axios } from "@/libs/axios";
-import { SignInType, SignUpType, updateUserType } from "@/types/type";
+import { PasswordType, SignInType, SignUpType, updateUserType } from "@/types/type";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
@@ -12,6 +12,7 @@ interface userStoreType {
   logout: () => void;
   getUser: () => Promise<void>;
   updateUser: (newData: updateUserType) => Promise<any>;
+  changePassword: (newData: PasswordType) => Promise<any>;
 }
 
 const useUserStore = create<userStoreType>((set) => ({
@@ -73,6 +74,17 @@ const useUserStore = create<userStoreType>((set) => ({
     set({ loading: true });
     try {
       const response = await axios.put("/user", user.user);
+      toast.success(response?.data?.message);
+      set({ user: response.data, loading: false });
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+      set({ loading: false, user: null });
+    }
+  },
+  changePassword: async (newData: PasswordType) => {
+    set({ loading: true });
+    try {
+      const response = await axios.put("/user/change-password", newData);
       toast.success(response?.data?.message);
       set({ user: response.data, loading: false });
     } catch (error: any) {

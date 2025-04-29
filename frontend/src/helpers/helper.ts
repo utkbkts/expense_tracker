@@ -1,13 +1,15 @@
-export const nameCharAt = (title: any) => {
-  const name = title
+export const nameCharAt = (title: unknown): string => {
+  if (typeof title !== "string") return "";
+
+  return title
     .split(" ")
     .map(
-      (word: string) =>
+      (word) =>
         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
     )
     .join(" ");
-  return name;
 };
+
 
 export const fetchCountries = async () => {
     try {
