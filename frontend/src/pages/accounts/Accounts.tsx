@@ -1,15 +1,31 @@
 import { useState } from "react";
 import useUserStore from "@/store/user.store";
 import { Button } from "@headlessui/react";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdVerifiedUser } from "react-icons/md";
+import useAccountStore from "@/store/account.store";
+import { Icons } from "./partials/Icons";
+import { getAccountIcon } from "@/helpers/helper";
+import AccountMenu from "./partials/AccountMenu";
 
 const Accounts = () => {
   const { user } = useUserStore();
+  const { account } = useAccountStore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenTopup, setIsOpenTopup] = useState(false);
   const [isOpenTransfer, setIsOpenTransfer] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState("");
+
+  const handleOpenAddMoney = (el: any) => {
+    setSelectedAccount(el?.id);
+    setIsOpenTopup(true);
+  };
+
+  const handleTransferMoney = (el: any) => {
+    setSelectedAccount(el?.id);
+    setIsOpenTopup(true);
+  };
+  console.log(isOpen)
 
   return (
     <div className="bg-black-400 min-h-screen text-white">
@@ -18,14 +34,62 @@ const Accounts = () => {
           <h1 className="text-2xl text-white">Account Information</h1>
           <div>
             <Button
-              onClick={() => setIsOpen(true)}
+              onClick={() => setIsOpen(!isOpen)}
               className="rounded bg-sky-600 px-4 py-2 text-sm text-white data-hover:bg-sky-500 data-hover:data-active:bg-sky-700 cursor-pointer flex items-center gap-2"
             >
-              <MdAdd size={20}/> <span>Add</span>
+              <MdAdd size={20} /> <span>Add</span>
             </Button>
           </div>
         </div>
       </div>
+      {!account ? (
+        <div className="w-full flex items-center justify-center py-10 text-gray-600 text-lg">
+          <span>No Account Found</span>
+        </div>
+      ) : (
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 py-10 gap-6">
+          {account?.map((item) => (
+            <div
+              key={item._id}
+              className="w-full h-48 flex gap-4 bg-gray-50 p-3 rounded shadow"
+            >
+              <div>
+                {getAccountIcon(item.account.account_name) ?? (
+                  <div className="w-12 h-12 bg-gray-300 rounded-full" />
+                )}
+                <div className="space-y-2 w-full">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <p>{item?.account?.account_name}</p>
+                      <MdVerifiedUser
+                        size={26}
+                        className="text-emerald-600 ml-1"
+                      />
+                    </div>
+                    {isOpen && (
+                      <AccountMenu
+                        addMoney={() => handleOpenAddMoney(item)}
+                        transferMoney={() => handleTransferMoney(item)}
+                      />
+                    )}
+                  </div>
+                  <span className="text-gray-600 font-light leading-loose">
+                    {item?.account?.account_number}
+                  </span>
+                  <p className="text-xs text-gray-600">
+                    {new Date(item?.account?.createdat).toLocaleDateString(
+                      "en-US",
+                      {
+                        dateStyle: "full",
+                      }
+                    )}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

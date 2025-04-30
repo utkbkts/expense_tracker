@@ -4,13 +4,13 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 
 interface accountStoreType {
-  account: accountType | null;
+  account: accountType[];
   loading: boolean;
   getAccount: () => Promise<void>;
 }
 
-const accountStore = create<accountStoreType>((set) => ({
-  account: null,
+const useAccountStore = create<accountStoreType>((set) => ({
+  account: [],
   loading: false,
 
   getAccount: async () => {
@@ -20,9 +20,9 @@ const accountStore = create<accountStoreType>((set) => ({
       set({ account: res.data, loading: false });
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
-      set({ loading: false, account: null });
+      set({ loading: false, account: [] });
     }
   },
 }));
 
-export default accountStore;
+export default useAccountStore;

@@ -35,10 +35,10 @@ export type accountType = {
   _id?: any;
   account: {
     user_id?: any;
-    account_name?: string;
+    account_name?: "crypto" | "visa debit card" | "cash" | "paypal";
     account_number?: string;
     account_balance?: string;
-    createdat?: string;
-    updatedat?: string;
+    createdat?: any | null;
+    updatedat?: any | null;
   };
 };
