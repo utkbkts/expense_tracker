@@ -27,6 +27,18 @@ export type updateUserType = {
 
 export type PasswordType = {
   _id?: any;
-  currentPassword:string
-  newPassword:string
-}
+  currentPassword: string;
+  newPassword: string;
+};
+
+export type accountType = {
+  _id?: any;
+  account: {
+    user_id?: any;
+    account_name?: string;
+    account_number?: string;
+    account_balance?: string;
+    createdat?: string;
+    updatedat?: string;
+  };
+};
