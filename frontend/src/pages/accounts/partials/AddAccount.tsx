@@ -59,6 +59,7 @@ const AddAccount = ({ isOpen, setIsOpen }: Props) => {
       account_number: data.account_number,
       amount: parseFloat(data.amount),
     });
+    setIsOpen(false)
   };
   
 
