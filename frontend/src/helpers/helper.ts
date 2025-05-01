@@ -1,4 +1,5 @@
 import { Icons } from "@/pages/accounts/partials/Icons";
+import { v4 as uuidv4 } from 'uuid';
 
 export const nameCharAt = (title: unknown): string => {
   if (typeof title !== "string") return "";
@@ -48,3 +49,12 @@ export const getAccountIcon = (name?: string) => {
 
   return Icons[key] || null;
 };
+
+export const generateAccountNumber=(accountNumber:string)=>{
+  while (accountNumber.length < 13){
+    const uuid = uuidv4().replace(/-/g,"")
+    accountNumber = uuid.replace(/\D/g,"")
+  }
+
+  return accountNumber.substring(0.13)
+}
