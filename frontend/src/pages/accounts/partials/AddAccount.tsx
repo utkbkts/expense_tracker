@@ -5,6 +5,9 @@ import useAccountStore from "@/store/account.store";
 import DialogWrapper from "@/components/DialogWrapper";
 import { DialogPanel, DialogTitle } from "@headlessui/react";
 import { MdOutlineWarning } from "react-icons/md";
+import Input from "@/components/input/Input";
+import { AccountSchema, AccountSchemaType } from "@/schema/account.schema";
+import Button from "@/components/button/Button";
 
 interface AccountType {
   id: number;
@@ -36,19 +39,28 @@ interface Props {
 }
 
 const AddAccount = ({ isOpen, setIsOpen }: Props) => {
-  const { account, loading } = useAccountStore();
+  const { account, loading, createAccount } = useAccountStore();
   const [selectedAccount, setSelectedAccount] = useState(accounts[0].title);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({});
+  } = useForm({
+    resolver: zodResolver(AccountSchema),
+  });
 
   const onClose = () => {
     setIsOpen(false);
   };
-  const onSubmit = () => {};
+  const onSubmit = async (data: AccountSchemaType) => {
+    await createAccount({
+      name: selectedAccount,
+      account_number: data.account_number,
+      amount: parseFloat(data.amount),
+    });
+  };
+  
 
   return (
     <DialogWrapper isOpen={isOpen} closeModal={onClose}>
@@ -87,13 +99,36 @@ const AddAccount = ({ isOpen, setIsOpen }: Props) => {
               </span>
             </div>
           )}
+          {!account?.some((a) => a.account_name === selectedAccount) && (
+            <>
+              <Input
+                name="account_number"
+                label="Account Number"
+                placeholder="8546548465"
+                register={register}
+                errors={errors?.account_number}
+                disabled={loading}
+                type="text"
+              />
+              <Input
+                name="amount"
+                label="Initial Amount"
+                placeholder="10.50 $"
+                register={register}
+                errors={errors?.amount}
+                disabled={loading}
+                type="text"
+              />
+            </>
+          )}
           <div className="flex justify-end">
-            <button
+            <Button
+              disabled={loading}
+              loading={loading}
               type="submit"
+              text={"Create Account"}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Add Account
-            </button>
+            />
           </div>
         </form>
       </DialogPanel>

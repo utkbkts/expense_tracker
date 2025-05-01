@@ -11,7 +11,6 @@ import { accountType } from "@/types/type";
 const Accounts = () => {
   const { user } = useUserStore();
   const { account, getAccount } = useAccountStore();
-  console.log("🚀 ~ Accounts ~ account:", account)
   useEffect(() => {
     getAccount();
   }, []);
@@ -52,7 +51,7 @@ const Accounts = () => {
           </div>
         ) : (
           <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 py-10 gap-6">
-            {account?.map((item:accountType) => (
+            {account?.map((item:any) => (
               <div
                 key={item._id}
                 className="w-full h-48 flex gap-4 bg-gray-50 p-3 rounded shadow"
