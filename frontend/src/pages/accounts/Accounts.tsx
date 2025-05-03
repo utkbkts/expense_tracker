@@ -6,7 +6,7 @@ import useAccountStore from "@/store/account.store";
 import { getAccountIcon } from "@/helpers/helper";
 import AccountMenu from "./partials/AccountMenu";
 import AddAccount from "./partials/AddAccount";
-import { accountType } from "@/types/type";
+import AddMoneyAccount from "./partials/AddMoneyAccount";
 
 const Accounts = () => {
   const { user } = useUserStore();
@@ -50,8 +50,8 @@ const Accounts = () => {
             <span>No Account Found</span>
           </div>
         ) : (
-          <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 py-10 gap-6">
-            {account?.map((item:any) => (
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 py-10 gap-6 p-4">
+            {account?.map((item: any) => (
               <div
                 key={item._id}
                 className="w-full h-48 flex gap-4 bg-gray-50 p-3 rounded shadow"
@@ -80,12 +80,9 @@ const Accounts = () => {
                       {item?.account_number}
                     </span>
                     <p className="text-xs text-gray-600">
-                      {new Date(item?.createdat).toLocaleDateString(
-                        "en-US",
-                        {
-                          dateStyle: "full",
-                        }
-                      )}
+                      {new Date(item?.createdat).toLocaleDateString("en-US", {
+                        dateStyle: "full",
+                      })}
                     </p>
                   </div>
                 </div>
@@ -94,7 +91,13 @@ const Accounts = () => {
           </div>
         )}
       </div>
+
       {isOpen && <AddAccount isOpen={isOpen} setIsOpen={setIsOpen} />}
+      <AddMoneyAccount
+        isOpen={isOpenTopup}
+        setIsOpen={setIsOpenTopup}
+        id={selectedAccount}
+      />
     </>
   );
 };

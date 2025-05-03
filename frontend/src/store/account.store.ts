@@ -8,6 +8,8 @@ interface accountStoreType {
   loading: boolean;
   getAccount: () => Promise<void>;
   createAccount: (newData: any) => Promise<any>;
+  addMoneyAccount: (params: { id: string; amount:any }) => Promise<any>;
+
 }
 
 const useAccountStore = create<accountStoreType>((set) => ({
@@ -30,19 +32,29 @@ const useAccountStore = create<accountStoreType>((set) => ({
     try {
       const response = await axios.post("/account/create", newData);
       const newAccount = response.data.data;
-  
+
       set((state) => ({
         account: [...state.account, newAccount],
         loading: false,
       }));
-  
+
       toast.success("Account created successfully!");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Something went wrong");
       set({ loading: false });
     }
-  }
-  
+  },
+  addMoneyAccount: async ({ id, amount }) => {
+    set({ loading: true });
+    try {
+      const res = await axios.put(`/account/add-money/${id}`, {amount});
+      set({ account: res.data, loading: false });
+      toast.success("Account money transfer successfully!");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Something went wrong");
+      set({ loading: false });
+    }
+  },
 }));
 
 export default useAccountStore;
