@@ -18,11 +18,11 @@ export const AccountSchema = z.object({
 
 export type AccountSchemaType = z.infer<typeof AccountSchema>;
 
-export const AddMoneyTransfer = z.object({
+export const AddMoneyAccountSchema = z.object({
   amount: z
     .string()
     .min(2, "Amount must be at least 2 characters")
     .max(50, "Amount must be at most 50 characters"),
 });
 
-export type AddMoneyTransferType = z.infer<typeof AddMoneyTransfer>;
+export type AddMoneyAccountType = z.infer<typeof AddMoneyAccountSchema>;

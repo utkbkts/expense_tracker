@@ -27,7 +27,7 @@ const Accounts = () => {
 
   const handleTransferMoney = (el: any) => {
     setSelectedAccount(el?.id);
-    setIsOpenTopup(true);
+    setIsOpenTransfer(true);
   };
   return (
     <>
@@ -60,21 +60,23 @@ const Accounts = () => {
                   {getAccountIcon(item?.account_name) ?? (
                     <div className="w-12 h-12 bg-gray-300 rounded-full" />
                   )}
-                  <div className="space-y-2 w-full">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <p className="text-black">{item?.account_name}</p>
-                        <MdVerifiedUser
-                          size={26}
-                          className="text-emerald-600 ml-1"
-                        />
+                  <div className="space-y-2 w-full ">
+                    <div className="flex items-center justify-between ">
+                      <div className="flex items-center justify-between w-full relative">
+                        <div className="flex items-center">
+                          <p className="text-black">{item?.account_name}</p>
+                          <MdVerifiedUser
+                            size={26}
+                            className="text-emerald-600 ml-1"
+                          />
+                        </div>
+                        <div className="relative">
+                          <AccountMenu
+                            addMoney={() => handleOpenAddMoney(item)}
+                            transferMoney={() => handleTransferMoney(item)}
+                          />
+                        </div>
                       </div>
-                      {isOpen && (
-                        <AccountMenu
-                          addMoney={() => handleOpenAddMoney(item)}
-                          transferMoney={() => handleTransferMoney(item)}
-                        />
-                      )}
                     </div>
                     <span className="text-gray-600 font-light leading-loose">
                       {item?.account_number}

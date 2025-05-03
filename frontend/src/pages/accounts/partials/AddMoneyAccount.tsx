@@ -5,10 +5,7 @@ import DialogWrapper from "@/components/DialogWrapper";
 import { DialogPanel, DialogTitle } from "@headlessui/react";
 import Input from "@/components/input/Input";
 import Button from "@/components/button/Button";
-import {
-  AddMoneyTransfer,
-  AddMoneyTransferType,
-} from "@/schema/account.schema";
+import { AddMoneyAccountSchema, AddMoneyAccountType } from "@/schema/account.schema";
 
 interface Props {
   isOpen: boolean;
@@ -23,10 +20,10 @@ const AddMoneyAccount = ({ isOpen, setIsOpen, id }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(AddMoneyTransfer),
+    resolver: zodResolver(AddMoneyAccountSchema),
   });
 
-  const submitHandler = async (data: AddMoneyTransferType) => {
+  const submitHandler = async (data: AddMoneyAccountType) => {
     await addMoneyAccount({ id, amount: data.amount });
   };
   const onClose = () => {
@@ -63,7 +60,7 @@ const AddMoneyAccount = ({ isOpen, setIsOpen, id }: Props) => {
               disabled={loading}
               loading={loading}
               type="submit"
-              text={"Add Money Transfer"}
+              text={"Add Money Account"}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
