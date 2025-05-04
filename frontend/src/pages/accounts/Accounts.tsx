@@ -7,10 +7,11 @@ import { getAccountIcon } from "@/helpers/helper";
 import AccountMenu from "./partials/AccountMenu";
 import AddAccount from "./partials/AddAccount";
 import AddMoneyAccount from "./partials/AddMoneyAccount";
+import TransferMoneyAccount from "./partials/TransferMoneyAccount";
 
 const Accounts = () => {
-  const { user } = useUserStore();
   const { account, getAccount } = useAccountStore();
+  console.log("🚀 ~ Accounts ~ account:", account);
   useEffect(() => {
     getAccount();
   }, []);
@@ -53,7 +54,7 @@ const Accounts = () => {
           <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 py-10 gap-6 p-4">
             {account?.map((item: any) => (
               <div
-                key={item._id}
+                key={item?._id}
                 className="w-full h-48 flex gap-4 bg-gray-50 p-3 rounded shadow"
               >
                 <div>
@@ -78,9 +79,14 @@ const Accounts = () => {
                         </div>
                       </div>
                     </div>
-                    <span className="text-gray-600 font-light leading-loose">
-                      {item?.account_number}
-                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-gray-600 font-light leading-loose">
+                        {item?.account_number}
+                      </span>
+                      <span className="text-gray-600 font-light leading-loose">
+                        ${item?.account_balance}
+                      </span>
+                    </div>
                     <p className="text-xs text-gray-600">
                       {new Date(item?.createdat).toLocaleDateString("en-US", {
                         dateStyle: "full",
@@ -99,6 +105,10 @@ const Accounts = () => {
         isOpen={isOpenTopup}
         setIsOpen={setIsOpenTopup}
         id={selectedAccount}
+      />
+      <TransferMoneyAccount
+        isOpen={isOpenTransfer}
+        setIsOpen={setIsOpenTransfer}
       />
     </>
   );

@@ -33,10 +33,12 @@ export type PasswordType = {
 
 export type accountType = {
   _id?: any;
+  id?: any;
   user_id?: any;
   account_name?: "crypto" | "visa debit card" | "cash" | "paypal" | string;
   account_number?: string;
   amount?: number;
+  account_balance?: number | undefined;
   createdat?: any | null;
   updatedat?: any | null;
 };
