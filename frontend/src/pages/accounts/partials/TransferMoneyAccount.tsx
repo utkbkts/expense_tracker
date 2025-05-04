@@ -12,6 +12,7 @@ import {
   AddMoneyAccountType,
 } from "@/schema/account.schema";
 import { accountType } from "@/types/type";
+import toast from "react-hot-toast";
 
 interface Props {
   isOpen: boolean;
@@ -20,7 +21,9 @@ interface Props {
 
 const TransferMoneyAccount = ({ isOpen, setIsOpen }: Props) => {
   const { account, loading, transferMoney } = useAccountStore();
-  const [fromAccountInfo, setFromAccountInfo] = useState<accountType | null>(null);
+  const [fromAccountInfo, setFromAccountInfo] = useState<accountType | null>(
+    null
+  );
   const [toAccountInfo, setToAccountInfo] = useState<accountType | null>(null);
 
   const {
@@ -31,20 +34,27 @@ const TransferMoneyAccount = ({ isOpen, setIsOpen }: Props) => {
     resolver: zodResolver(AddMoneyAccountSchema),
   });
 
-  const getAccountByName = (value: string, setter: (account: accountType | null) => void) => {
-    const data = account?.find((acc: accountType) => acc.account_name === value);
+  const getAccountByName = (
+    value: string,
+    setter: (account: accountType | null) => void
+  ) => {
+    const data = account?.find(
+      (acc: accountType) => acc?.account_name === value
+    );
     setter(data || null);
   };
 
   const onClose = () => setIsOpen(false);
   const onSubmit = async (data: AddMoneyAccountType) => {
     if (!fromAccountInfo || !toAccountInfo) return;
-    
+
     const newData = {
-      from_account: fromAccountInfo.id,
-      to_account: toAccountInfo.id,
-      amount: Number(data.amount)
+      from_account: fromAccountInfo?.id,
+      to_account: toAccountInfo?.id,
+      amount: Number(data.amount),
     };
+    toast.success("Transfer money successfully!");
+    window.location.reload();
     await transferMoney(newData);
     setIsOpen(false);
   };
@@ -75,8 +85,8 @@ const TransferMoneyAccount = ({ isOpen, setIsOpen }: Props) => {
                 Select Account
               </option>
               {account?.map((acc: accountType) => (
-                <option key={acc._id} value={acc.account_name}>
-                  {acc.account_name} {" - "}
+                <option key={acc?.id} value={acc?.account_name}>
+                  {acc?.account_name} {" - "}
                   {acc?.account_balance}
                 </option>
               ))}
@@ -98,8 +108,8 @@ const TransferMoneyAccount = ({ isOpen, setIsOpen }: Props) => {
                 To Account
               </option>
               {account?.map((acc: accountType) => (
-                <option key={acc._id} value={acc.account_name}>
-                  {acc.account_name} {" - "}
+                <option key={acc?.id} value={acc?.account_name}>
+                  {acc?.account_name} {" - "}
                   {acc?.account_balance}
                 </option>
               ))}
@@ -107,7 +117,7 @@ const TransferMoneyAccount = ({ isOpen, setIsOpen }: Props) => {
           </div>
 
           {fromAccountInfo?.account_balance !== undefined &&
-            fromAccountInfo.account_balance <= 0 && (
+            fromAccountInfo?.account_balance <= 0 && (
               <div className="flex items-center gap-2 bg-yellow-400 text-black p-2 mt-6 rounded">
                 <MdOutlineWarning size={30} />
                 <span className="text-sm">

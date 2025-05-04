@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import useUserStore from "@/store/user.store";
 import { Button } from "@headlessui/react";
 import { MdAdd, MdVerifiedUser } from "react-icons/md";
 import useAccountStore from "@/store/account.store";
@@ -8,13 +7,11 @@ import AccountMenu from "./partials/AccountMenu";
 import AddAccount from "./partials/AddAccount";
 import AddMoneyAccount from "./partials/AddMoneyAccount";
 import TransferMoneyAccount from "./partials/TransferMoneyAccount";
+import Loading from "@/components/Loadind";
+import { accountType } from "@/types/type";
 
 const Accounts = () => {
-  const { account, getAccount } = useAccountStore();
-  console.log("🚀 ~ Accounts ~ account:", account);
-  useEffect(() => {
-    getAccount();
-  }, []);
+  const { account, getAccount, loading } = useAccountStore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenTopup, setIsOpenTopup] = useState(false);
@@ -30,6 +27,13 @@ const Accounts = () => {
     setSelectedAccount(el?.id);
     setIsOpenTransfer(true);
   };
+  useEffect(() => {
+    getAccount();
+  }, []);
+
+  if (loading) {
+    return <Loading fullScreen />;
+  }
   return (
     <>
       <div className="bg-black-400 min-h-screen text-white">
@@ -52,9 +56,9 @@ const Accounts = () => {
           </div>
         ) : (
           <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 py-10 gap-6 p-4">
-            {account?.map((item: any) => (
+            {account?.map((item: accountType) => (
               <div
-                key={item?._id}
+                key={item?.id}
                 className="w-full h-48 flex gap-4 bg-gray-50 p-3 rounded shadow"
               >
                 <div>

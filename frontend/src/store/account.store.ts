@@ -27,7 +27,7 @@ const useAccountStore = create<accountStoreType>((set) => ({
     try {
       const response = await axios.get("/account");
       const res = response.data;
-      set({ account: res.data, loading: false });
+      set({ account: res.data || [], loading: false });
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
       set({ loading: false, account: [] });
@@ -37,7 +37,7 @@ const useAccountStore = create<accountStoreType>((set) => ({
     set({ loading: true });
     try {
       const response = await axios.post("/account/create", newData);
-      const newAccount = response.data.data;
+      const newAccount = response.data;
 
       set((state) => ({
         account: [...state.account, newAccount],
@@ -54,7 +54,7 @@ const useAccountStore = create<accountStoreType>((set) => ({
     set({ loading: true });
     try {
       const res = await axios.put(`/account/add-money/${id}`, { amount });
-      set({ account: res.data, loading: false });
+      set({ account: res.data || [], loading: false });
       toast.success("Account money successfully!");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Something went wrong");
@@ -69,7 +69,7 @@ const useAccountStore = create<accountStoreType>((set) => ({
     set({ loading: true });
     try {
       const res = await axios.put(`/transaction/transfer-money`, data);
-      set({ account: res.data, loading: false });
+      set({ account: res.data || [], loading: false });
       toast.success("Transfer money successfully!");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Something went wrong");
