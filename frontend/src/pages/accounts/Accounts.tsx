@@ -39,7 +39,10 @@ const Accounts = () => {
       <div className="bg-black-400 min-h-screen text-white">
         <div className="container mx-auto pt-32">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl text-white">Account Information</h1>
+            <h1 className="text-4xl font-extrabold text-center text-white tracking-wide relative inline-block w-full">
+              <span className="relative z-10">Accounts</span>
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-2 bg-pink-300 blur-sm rounded-full z-0"></span>
+            </h1>
             <div>
               <Button
                 onClick={() => setIsOpen(!isOpen)}
