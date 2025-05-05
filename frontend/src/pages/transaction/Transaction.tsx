@@ -49,36 +49,43 @@ const Transaction = () => {
           <span className="relative z-10">Transaction Activity</span>
           <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-2 bg-pink-300 blur-sm rounded-full z-0"></span>
         </h1>
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <DateRange />
-          <form onSubmit={handleSearch}>
-            <div className="w-full flex items-center gap-2 border border-gray-300 rounded-md px-2 py-2">
-              <IoSearchOutline />
-              <input
-                type={search}
-                name="search"
-                onChange={(e) => setSearch(e.target.value)}
-                className="outline-none gropup bg-transparent text-gray-200 placeholder:text-gray-600"
-              />
-            </div>
-          </form>
-          <button
-            onClick={() => setIsOpen(true)}
-            className="py-1.5 px-2 rounded text-white bg-black flex items-center justify-center gap-2 border"
-          >
-            <MdAdd size={22} />
-            <span>Pay</span>
-          </button>
+        <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between ">
+          <div>
+            <DateRange />
+          </div>
+          <div className="flex items-center gap-2">
+            <form onSubmit={handleSearch}>
+              <div className="w-full flex items-center gap-2 border border-gray-300 rounded-md px-2 py-2">
+                <IoSearchOutline />
+                <input
+                  type={search}
+                  name="search"
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="outline-none gropup bg-transparent text-gray-200 placeholder:text-gray-600"
+                />
+              </div>
+            </form>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="py-1.5 px-2 rounded text-white bg-black flex items-center justify-center gap-2 border cursor-pointer"
+            >
+              <MdAdd size={22} />
+              <span>Pay</span>
+            </button>
 
-          <button
-            onClick={() =>
-              exportToExcel(transaction, `Transaction ${startDate}-${endDate}`)
-            }
-            className="flex items-center gap-2 text-white"
-          >
-            Export <CiExport size={22} />
-            <span>Pay</span>
-          </button>
+            <button
+              onClick={() =>
+                exportToExcel(
+                  transaction,
+                  `Transaction ${startDate}-${endDate}`
+                )
+              }
+              className="py-1.5 px-2 rounded text-white bg-black flex items-center justify-center gap-2 border cursor-pointer"
+            >
+              <CiExport size={22} />
+              Export
+            </button>
+          </div>
         </div>
       </div>
     </div>
