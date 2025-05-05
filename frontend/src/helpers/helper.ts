@@ -58,3 +58,10 @@ export const generateAccountNumber = (accountNumber: string) => {
 
   return accountNumber.substring(0.13);
 };
+
+export const getDateSeventDaysAgo = () => {
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate());
+  return sevenDaysAgo.toISOString().split("T")[0];
+};

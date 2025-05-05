@@ -5,8 +5,8 @@ import { useSearchParams } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 import { CiExport } from "react-icons/ci";
-import { exportToExcel } from "@/libs/exportToExcel";
-
+import { exportToExcel } from "@/libs/export.excel";
+import DateRange from "@/components/DateRange";
 
 const Transaction = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -50,7 +50,7 @@ const Transaction = () => {
           <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-2 bg-pink-300 blur-sm rounded-full z-0"></span>
         </h1>
         <div className="flex flex-col md:flex-row md:items-center gap-4">
-          {/* <DateRange /> */}
+          <DateRange />
           <form onSubmit={handleSearch}>
             <div className="w-full flex items-center gap-2 border border-gray-300 rounded-md px-2 py-2">
               <IoSearchOutline />
