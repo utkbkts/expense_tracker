@@ -10,35 +10,33 @@ const getTransactions = async (
 ) => {
   try {
     const today = new Date();
-
     const _sevenDaysAgo = new Date(today);
-
     _sevenDaysAgo.setDate(today.getDate() - 7);
 
     const sevenDaysAgo = _sevenDaysAgo.toISOString().split("T")[0];
 
     const { df, dt, s } = req.query;
-
     const { id } = req.user;
 
     const startDate = new Date(typeof df === "string" ? df : sevenDaysAgo);
     const endDate = new Date(typeof dt === "string" ? dt : new Date());
+    const search = typeof s === "string" ? s.trim() : "";
 
-    const transactions = await pool.query({
-      text: `
-          SELECT * 
-          FROM tbltransaction 
-          WHERE user_id = $1 
-            AND createdat BETWEEN $2 AND $3 
-            AND (
-              description ILIKE '%' || $4 || '%' 
-              OR status ILIKE '%' || $4 || '%' 
-              OR source ILIKE '%' || $4 || '%'
-            )
-          ORDER BY id DESC
-        `,
-      values: [id, startDate, endDate, s],
-    });
+    let query = `
+      SELECT * FROM tbltransaction
+      WHERE user_id = $1 AND createdat BETWEEN $2 AND $3
+    `;
+
+    const values: any[] = [id, startDate, endDate];
+
+    if (search) {
+      query += ` AND source ILIKE '%' || $4 || '%'`;
+      values.push(search);
+    }
+
+    query += " ORDER BY id DESC";
+
+    const transactions = await pool.query({ text: query, values });
 
     res.status(200).json({
       status: "success",
@@ -50,6 +48,8 @@ const getTransactions = async (
     );
   }
 };
+
+
 
 const getDashboardInformation = async (
   req: Request,

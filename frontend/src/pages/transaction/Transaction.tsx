@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { IoCheckmarkDoneCircle, IoSearchOutline } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 import { CiExport } from "react-icons/ci";
-import { RiProgress3Line } from "react-icons/ri";
+import { RiProgress3Line, RiResetRightFill } from "react-icons/ri";
 import { exportToExcel } from "@/libs/export.excel";
 import DateRange from "@/components/DateRange";
 
@@ -20,6 +20,7 @@ const Transaction = () => {
   const [search, setSearch] = useState("");
   const startDate = searchParams.get("df") || "";
   const endDate = searchParams.get("dt") || "";
+  const s = searchParams.get("s") || "";
 
   const handleViewTransaction = (el: any) => {
     setSelected(el);
@@ -32,9 +33,21 @@ const Transaction = () => {
     setSearchParams({
       df: startDate,
       dt: endDate,
+      s: search,
     });
     await getTransaction(startDate, endDate, search);
   };
+  const handleReset = async (e: FormEvent) => {
+    e.preventDefault();
+
+    setSearch("");
+    setSearchParams({
+      df: startDate,
+      dt: endDate,
+    });
+    getTransaction(startDate, endDate, "");
+  };
+
   useEffect(() => {
     getTransaction(startDate, endDate, search);
   }, [startDate, endDate]);
@@ -59,7 +72,7 @@ const Transaction = () => {
               <div className="w-full flex items-center gap-2 border border-gray-300 rounded-md px-2 py-2">
                 <IoSearchOutline />
                 <input
-                  type={search}
+                  type={"text"}
                   name="search"
                   onChange={(e) => setSearch(e.target.value)}
                   className="outline-none gropup bg-transparent text-gray-200 placeholder:text-gray-600"
@@ -73,7 +86,13 @@ const Transaction = () => {
               <MdAdd size={22} />
               <span>Pay</span>
             </button>
-
+            <button
+              onClick={handleReset}
+              className="py-1.5 px-2 rounded text-red-400 flex items-center justify-center gap-2 border cursor-pointer"
+            >
+              <RiResetRightFill size={22} />
+              <span>Reset</span>
+            </button>
             <button
               onClick={() =>
                 exportToExcel(
