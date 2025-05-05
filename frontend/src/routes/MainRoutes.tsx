@@ -4,6 +4,7 @@ import MainLayout from "@/layouts/MainLayout";
 import Loading from "@/components/Loadind";
 import ProctedRoutes from "./ProctedRoutes";
 import Accounts from "@/pages/accounts/Accounts";
+import Transaction from "@/pages/transaction/Transaction";
 
 const HomePage = React.lazy(() => import("@/pages/home/HomePage"));
 const Signup = React.lazy(() => import("@/pages/auth/sign-up/SignUp"));
@@ -47,7 +48,7 @@ export const MainRoutes = {
       path: "/settings",
       element: (
         <Suspense fallback={<Loading fullScreen />}>
-            <Settings />
+          <Settings />
         </Suspense>
       ),
     },
@@ -55,7 +56,15 @@ export const MainRoutes = {
       path: "/accounts",
       element: (
         <Suspense fallback={<Loading fullScreen />}>
-            <Accounts />
+          <Accounts />
+        </Suspense>
+      ),
+    },
+    {
+      path: "/transactions",
+      element: (
+        <Suspense fallback={<Loading fullScreen />}>
+          <Transaction />
         </Suspense>
       ),
     },
