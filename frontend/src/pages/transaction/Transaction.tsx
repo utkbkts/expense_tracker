@@ -2,9 +2,10 @@ import Loading from "@/components/Loadind";
 import useTransactionStore from "@/store/transaction.route";
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoCheckmarkDoneCircle, IoSearchOutline } from "react-icons/io5";
 import { MdAdd } from "react-icons/md";
 import { CiExport } from "react-icons/ci";
+import { RiProgress3Line } from "react-icons/ri";
 import { exportToExcel } from "@/libs/export.excel";
 import DateRange from "@/components/DateRange";
 
@@ -86,6 +87,94 @@ const Transaction = () => {
               Export
             </button>
           </div>
+        </div>
+        <div className="overflow-x-auto mt-5">
+          {transaction?.length === 0 ? (
+            <div className="w-full flex items-center justify-center py-10 text-gray-600 text-lg">
+              <span>No Transaction History</span>
+            </div>
+          ) : (
+            <>
+              <table className="w-full">
+                <thead className="w-full border-b border-gray-300">
+                  <tr className="w-full text-white text-left">
+                    <th className="py-2">Date</th>
+                    <th className="py-2 px-4">Description</th>
+                    <th className="py-2 px-4">Status</th>
+                    <th className="py-2 px-4">Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transaction?.map((acc) => (
+                    <tr
+                      key={acc.id}
+                      className="w-full border-b- border-gray-200 text-gray-200"
+                    >
+                      <td className="py-4">
+                        <p className="w-24 md:w-auto">
+                          {new Date(acc.createdat).toDateString()}
+                        </p>
+                      </td>
+                      <td className="py-4 px-2">
+                        <div className="flex flex-col w-56 md:w-auto">
+                          <p className="text-base 2xl:text-lg text-white line-clamp-2">
+                            {acc.description}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="py-4 px-2">
+                        <div className="flex items-center gap-2">
+                          {acc.status === "Pending" && (
+                            <RiProgress3Line
+                              className="text-amber-600"
+                              size={24}
+                            />
+                          )}
+                          {acc.status === "Completed" && (
+                            <IoCheckmarkDoneCircle
+                              className="text-emerald-600"
+                              size={24}
+                            />
+                          )}
+                          {acc.status === "Rejected" && (
+                            <>
+                              {" "}
+                              <IoCheckmarkDoneCircle
+                                className="text-red-600"
+                                size={24}
+                              />
+                              <span>{acc?.status}</span>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-4 px">{acc?.source}</td>
+                      <td className="py-4 text-white text-base font-medium">
+                        <span
+                          className={`${
+                            acc?.type === "income"
+                              ? "text-emerald-600"
+                              : "text-red-600"
+                          } text-lg font-bold ml-1`}
+                        >
+                          {acc?.type === "income" ? "+" : "-"}
+                        </span>
+                        {acc?.amount}
+                      </td>
+                      <td className="py-4 px-2">
+                        <button
+                          onClick={() => handleViewTransaction(acc)}
+                          className="outline-none cursor-pointer text-violet-600 hover:underline"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
         </div>
       </div>
     </div>

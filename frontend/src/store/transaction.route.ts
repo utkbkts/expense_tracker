@@ -3,10 +3,15 @@ import toast from "react-hot-toast";
 import { create } from "zustand";
 
 interface Transaction {
-  id: string;
-  amount: number;
-  date: string;
+  id: number;
+  amount: number | string;
+  createdat: string;
   description: string;
+  source:string;
+  status:string;
+  type:string;
+  updatedat:string;
+  user_id:number
 }
 
 interface TransactionStore {
