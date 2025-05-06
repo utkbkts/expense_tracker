@@ -9,7 +9,7 @@ import hpp from "hpp";
 import { sanitizeInput } from "./middlewares/xss.sanitize";
 import path from "path";
 import router from "./routes";
-import {errorMiddleware} from "./middlewares/error.middleware";
+import { errorMiddleware } from "./middlewares/error.middleware";
 const __dirname = path.resolve();
 const app = express();
 dotenv.config();
@@ -26,13 +26,16 @@ app.use(
   })
 );
 
-
 //help for package
 app.use(cookieParser());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(limiter);
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(compression());
 app.use(hpp());
 app.use(sanitizeInput);
@@ -41,7 +44,7 @@ app.use(sanitizeInput);
 app.use("/api/v1", router);
 
 //after router middleware
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 //Build provice
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../frontend/dist")));
