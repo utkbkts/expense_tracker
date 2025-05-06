@@ -42,3 +42,16 @@ export type accountType = {
   createdat?: any | null;
   updatedat?: any | null;
 };
+
+
+export interface TransactionType {
+  id: number;
+  amount: number | string;
+  createdat: string;
+  description: string;
+  source:string;
+  status:string;
+  type:string;
+  updatedat:string;
+  user_id:number
+}
