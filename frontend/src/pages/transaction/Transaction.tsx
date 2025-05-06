@@ -15,7 +15,6 @@ const Transaction = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { loading, getTransaction, transaction } = useTransactionStore();
 
-  const [isOpen, setIsOpen] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [selected, setSelected] = useState(null);
 
@@ -85,7 +84,6 @@ const Transaction = () => {
                 </div>
               </form>
               <button
-                onClick={() => setIsOpen(true)}
                 className="py-1.5 px-2 rounded text-white bg-black flex items-center justify-center gap-2 border cursor-pointer"
               >
                 <MdAdd size={22} />
