@@ -11,7 +11,7 @@ import Loading from "@/components/Loadind";
 import { accountType } from "@/types/type";
 
 const Accounts = () => {
-  const { account, getAccount, loading } = useAccountStore();
+  const { account, getAccount, loading, deleteAccount } = useAccountStore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenTopup, setIsOpenTopup] = useState(false);
@@ -26,6 +26,10 @@ const Accounts = () => {
   const handleTransferMoney = (el: any) => {
     setSelectedAccount(el?.id);
     setIsOpenTransfer(true);
+  };
+  const deleteAccountData = async (el: any) => {
+    await deleteAccount(el?.id);
+    setIsOpenTransfer(false);
   };
   useEffect(() => {
     getAccount();
@@ -82,6 +86,7 @@ const Accounts = () => {
                           <AccountMenu
                             addMoney={() => handleOpenAddMoney(item)}
                             transferMoney={() => handleTransferMoney(item)}
+                            deleteAccount={() => deleteAccountData(item)}
                           />
                         </div>
                       </div>

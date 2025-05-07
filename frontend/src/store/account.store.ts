@@ -16,6 +16,7 @@ interface accountStoreType {
   createAccount: (newData: any) => Promise<any>;
   addMoneyAccount: (params: { id: string; amount: any }) => Promise<any>;
   transferMoney: (data: TransferMoneyParams) => Promise<any>;
+  deleteAccount: (id: string) => Promise<void>;
 }
 
 const useAccountStore = create<accountStoreType>((set) => ({
@@ -73,6 +74,22 @@ const useAccountStore = create<accountStoreType>((set) => ({
       toast.success("Transfer money successfully!");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Something went wrong");
+      set({ loading: false });
+    }
+  },
+  deleteAccount: async (id) => {
+    set({ loading: true });
+    try {
+      await axios.delete(`/account/${id}`);
+
+      set((state) => ({
+        account: state.account.filter((acc) => acc.id !== id),
+        loading: false,
+      }));
+
+      toast.success("Account deleted successfully!");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to delete account");
       set({ loading: false });
     }
   },

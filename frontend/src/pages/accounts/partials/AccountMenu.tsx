@@ -4,9 +4,10 @@ import { MdMoreVert } from "react-icons/md";
 interface Props {
   addMoney: () => void;
   transferMoney: () => void;
+  deleteAccount: () => void;
 }
 
-const AccountMenu = ({ addMoney, transferMoney }: Props) => {
+const AccountMenu = ({ addMoney, transferMoney,deleteAccount }: Props) => {
   return (
     <Menu as="div" className="relative">
       <MenuButton className="inline-flex justify-center items-center rounded-md text-sm font-medium text-gray-600 cursor-pointer">
@@ -35,6 +36,18 @@ const AccountMenu = ({ addMoney, transferMoney }: Props) => {
                 } group flex w-full items-center rounded-md px-4 py-2 text-sm transition-colors`}
               >
                 Add Money
+              </button>
+            )}
+          </MenuItem>
+          <MenuItem>
+            {({ active }) => (
+              <button
+                onClick={deleteAccount}
+                className={`${
+                  active ? "bg-gray-100 text-red-600 cursor-pointer" : "text-red-600"
+                } group flex w-full items-center rounded-md px-4 py-2 text-sm transition-colors`}
+              >
+                Delete Account
               </button>
             )}
           </MenuItem>

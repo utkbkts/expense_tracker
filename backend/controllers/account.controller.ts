@@ -99,18 +99,17 @@ const addMoneyToAccount = async (
 ) => {
   try {
     const { id } = req.user;
-    const { id: paramsId } = req.params; 
+    const { id: paramsId } = req.params;
     const { amount } = req.body;
 
-  
     const newAmount = Number(amount);
     if (isNaN(newAmount) || newAmount <= 0) {
-      return next(new ErrorHandler('Invalid amount', 400));
+      return next(new ErrorHandler("Invalid amount", 400));
     }
 
     const result = await pool.query({
       text: `UPDATE tblaccount SET account_balance = (account_balance + $1), updatedat = CURRENT_TIMESTAMP WHERE id = $2 AND user_id = $3 RETURNING *`,
-      values: [newAmount, paramsId, id], 
+      values: [newAmount, paramsId, id],
     });
 
     const accountInformation = result.rows[0];
@@ -134,20 +133,65 @@ const addMoneyToAccount = async (
       ],
     };
     await pool.query(transQuery);
-    
+
     res.status(200).json({
       status: "success",
       message: "Operation completed successfully",
       data: accountInformation,
     });
   } catch (error: any) {
-    return next(new ErrorHandler(`Internal server Error: ${error.message}`, 500));
+    return next(
+      new ErrorHandler(`Internal server Error: ${error.message}`, 500)
+    );
   }
 };
 
+const deleteAccount = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.user;
+    const { id: paramsId } = req.params;
+
+    const accountQuery = await pool.query({
+      text: `SELECT * FROM tblaccount WHERE id = $1 AND user_id = $2`,
+      values: [paramsId, id],
+    });
+
+    if (accountQuery.rowCount === 0) {
+      return next(new ErrorHandler(`Account not found or not authorized`, 404));
+    }
+
+    const account = accountQuery.rows[0];
+
+    await pool.query({
+      text: `DELETE FROM tblaccount WHERE id = $1 AND user_id = $2`,
+      values: [paramsId, id],
+    });
+
+    await pool.query({
+      text: `UPDATE tbluser 
+             SET accounts = array_remove(accounts, $1), updatedat = CURRENT_TIMESTAMP 
+             WHERE id = $2`,
+      values: [account.account_name, id],
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "Account deleted successfully",
+    });
+  } catch (error: any) {
+    return next(
+      new ErrorHandler(`Internal server Error: ${error.message}`, 500)
+    );
+  }
+};
 
 export default {
   getAccounts,
   createAccount,
   addMoneyToAccount,
+  deleteAccount,
 };

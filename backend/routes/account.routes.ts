@@ -7,5 +7,6 @@ const router = express.Router();
 router.get("/:id?", authMiddleware,accountController.getAccounts);
 router.post("/create",authMiddleware, accountController.createAccount);
 router.put("/add-money/:id",authMiddleware, accountController.addMoneyToAccount);
+router.delete("/:id",authMiddleware, accountController.deleteAccount);
 
 export default router;
