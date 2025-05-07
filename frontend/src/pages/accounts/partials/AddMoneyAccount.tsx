@@ -5,7 +5,10 @@ import DialogWrapper from "@/components/DialogWrapper";
 import { DialogPanel, DialogTitle } from "@headlessui/react";
 import Input from "@/components/input/Input";
 import Button from "@/components/button/Button";
-import { AddMoneyAccountSchema, AddMoneyAccountType } from "@/schema/account.schema";
+import {
+  AddMoneyAccountSchema,
+  AddMoneyAccountType,
+} from "@/schema/account.schema";
 
 interface Props {
   isOpen: boolean;
@@ -24,7 +27,12 @@ const AddMoneyAccount = ({ isOpen, setIsOpen, id }: Props) => {
   });
 
   const submitHandler = async (data: AddMoneyAccountType) => {
-    await addMoneyAccount({ id, amount: data.amount });
+    const newData = {
+      id,
+      amount: data.amount,
+    };
+    window.location.reload();
+    await addMoneyAccount(newData);
   };
   const onClose = () => {
     setIsOpen(false);

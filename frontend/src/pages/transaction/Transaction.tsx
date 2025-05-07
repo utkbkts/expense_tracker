@@ -52,7 +52,7 @@ const Transaction = () => {
     if (transaction) {
       getTransaction(startDate, endDate, search);
     }
-  }, [startDate, endDate, search]);
+  }, [startDate, endDate]);
 
   if (loading) {
     return <Loading fullScreen />;

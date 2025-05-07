@@ -54,14 +54,15 @@ const AddAccount = ({ isOpen, setIsOpen }: Props) => {
     setIsOpen(false);
   };
   const onSubmit = async (data: AccountSchemaType) => {
-    await createAccount({
+    const newData = {
       name: selectedAccount,
       account_number: data.account_number,
       amount: parseFloat(data.amount),
-    });
-    setIsOpen(false)
+    };
+    window.location.reload();
+    await createAccount(newData);
+    setIsOpen(false);
   };
-  
 
   return (
     <DialogWrapper isOpen={isOpen} closeModal={onClose}>
