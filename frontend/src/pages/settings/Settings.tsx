@@ -2,9 +2,18 @@ import { nameCharAt } from "@/helpers/helper";
 import useUserStore from "@/store/user.store";
 import SettingForm from "./partials/SettingForm";
 import ChangePassword from "./partials/ChangePassword";
+import { useNavigate } from "react-router-dom";
+import Loading from "@/components/Loadind";
 
 const Settings = () => {
-  const { user } = useUserStore();
+  const { user,loading } = useUserStore();
+  const navigate = useNavigate();
+  if (!user) {
+    return navigate("/");
+  }
+  if(loading){
+    return <Loading fullScreen/>
+  }
   return (
     <div className="bg-black-400 min-h-screen text-white">
       <div className="pt-32 container mx-auto">
@@ -25,7 +34,7 @@ const Settings = () => {
           <div className="flex flex-col  justify-center">
             {/* SettingForm */}
             <SettingForm />
-            <hr className="bg-white mt-10 mb-2 w-full h-[1px]"/>
+            <hr className="bg-white mt-10 mb-2 w-full h-[1px]" />
             <ChangePassword />
           </div>
         </div>
