@@ -2,8 +2,6 @@ import { nameCharAt } from "@/helpers/helper";
 import useUserStore from "@/store/user.store";
 import SettingForm from "./partials/SettingForm";
 import ChangePassword from "./partials/ChangePassword";
-import { useNavigate } from "react-router-dom";
-import Loading from "@/components/Loadind";
 
 const Settings = () => {
   const { user } = useUserStore();
