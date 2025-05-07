@@ -6,14 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loadind";
 
 const Settings = () => {
-  const { user,loading } = useUserStore();
-  const navigate = useNavigate();
-  if (!user) {
-    return navigate("/");
-  }
-  if(loading){
-    return <Loading fullScreen/>
-  }
+  const { user } = useUserStore();
+
   return (
     <div className="bg-black-400 min-h-screen text-white">
       <div className="pt-32 container mx-auto">

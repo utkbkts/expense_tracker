@@ -16,3 +16,4 @@ const ProctedRoutes = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default ProctedRoutes;
+
